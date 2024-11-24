@@ -1,0 +1,22 @@
+{
+  "name": "stock-it",
+  "version": "1.0.0",
+  "description": "Trabalho de conclusão da matéria de progração backend - Sistema de estoque",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gskumlehn/stock-it.git"
+  },
+  "author": "Gabriel Sprotte Kumlehn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gskumlehn/stock-it/issues"
+  },
+  "homepage": "https://github.com/gskumlehn/stock-it#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
