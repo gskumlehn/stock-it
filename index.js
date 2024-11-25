@@ -24,3 +24,10 @@ app.get('/', (req, res) => {
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });
+
+//Configuração do Express para receber requisições em JSON
+app.use(express.json());
+
+//Importando as rotas
+const productRoutes = require('./routes/productRoute');
+app.use('/products', productRoutes);
