@@ -44,6 +44,9 @@ async function update(req, res) {
   try {
     if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter' });
 
+    const product = await Product.findOne({ sku: sku });
+    if (!product) return res.status(409).json({ error: 'Product does not exist' });
+
     const updatedProduct = await Product.updateOne({ sku: req.params.sku }, req.body);
     return res.status(200).json(updatedProduct);
   } catch (error) {
@@ -55,6 +58,9 @@ async function update(req, res) {
 async function remove(req, res) {
   try {
     if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter' });
+
+    const product = await Product.findOne({ sku: sku });
+    if (!product) return res.status(409).json({ error: 'Product does not exist' });
 
     const result = await Product.deleteOne({ sku: req.params.sku });
     return res.status(200).json(result);
