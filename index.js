@@ -3,7 +3,7 @@ require('dotenv').config()
 
 // Conexão com o MongoDB utilizando mongoose
 const mongoose = require('mongoose')
-const uri = `mongodb+srv://stock-it:${process.env.DB_PASSWORD}@stockitdb.t28fl.mongodb.net/?retryWrites=true&w=majority&appName=StockItDB`;
+const uri = process.env.DB_URI
 
 mongoose.connect(uri)
 .then(() => {
