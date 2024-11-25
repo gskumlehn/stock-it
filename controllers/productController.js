@@ -2,14 +2,13 @@ const Product = require('../models/product');
 
 async function create(req, res) {
   try {
-    const { name, sku, quantity, thresholdQuantity, price, description } = req.body;
-
-    const product = await Product.findOne({ sku: sku });
-    if (product) return res.status(409).json({ error: 'Product already exists' });
-
+    const { name, sku, quantity, price, description, thresholdQuantity } = req.body;
     if (!name || !sku || !quantity || !price) {
       return res.status(400).json({ error: 'Missing required parameters' });
     }
+
+    const product = await Product.findOne({ sku: sku });
+    if (product) return res.status(409).json({ error: 'Product already exists' });
 
     await Product.create({ name, sku, quantity, thresholdQuantity, price, description });
     return res.status(201).json({ message: 'Product saved successfully' });
