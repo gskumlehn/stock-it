@@ -21,6 +21,11 @@ jobs:
       - name: Set up MongoDB URI
         run: echo "DB_URI=${{ secrets.DB_URI }}" >> $GITHUB_ENV
 
+      - name: Run tests
+        env:
+          MONGODB_URI: ${{ secrets.DB_URI }}
+        run: npm test
+
       - name: Install dependencies
         run: npm install
 
