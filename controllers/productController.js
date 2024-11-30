@@ -44,8 +44,8 @@ async function update(req, res) {
   try {
     if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter' });
 
-    const product = await Product.findOne({ sku: sku });
-    if (!product) return res.status(409).json({ error: 'Product does not exist' });
+    const product = await Product.findOne({ sku: req.params.sku });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
 
     const updatedProduct = await Product.updateOne({ sku: req.params.sku }, req.body);
     return res.status(200).json(updatedProduct);
@@ -59,11 +59,11 @@ async function remove(req, res) {
   try {
     if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter' });
 
-    const product = await Product.findOne({ sku: sku });
-    if (!product) return res.status(409).json({ error: 'Product does not exist' });
+    const product = await Product.findOne({ sku: req.params.sku });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
 
     const result = await Product.deleteOne({ sku: req.params.sku });
-    return res.status(200).json(result);
+    return res.status(204).json(result);
   } catch (error) {
     console.error('Error deleting product by SKU:', error);
     return res.status(500).json({ error: 'Unknown error, contact support.' });
