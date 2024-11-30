@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/productRoute.test.js --timeout 10000",
-    "build": "node index.js"
+    "build": "echo 'Build process completed.'"
   },
   "repository": {
     "type": "git",
