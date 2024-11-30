@@ -23,7 +23,7 @@ jobs:
 
       - name: Run tests
         env:
-          MONGODB_URI: ${{ secrets.DB_URI }}
+          DB_URI: ${{ secrets.DB_URI }}
         run: npm test
 
       - name: Install dependencies
