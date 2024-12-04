@@ -20,7 +20,7 @@ async function create(req, res) {
 
 async function list(req, res) {
   try {
-    const products = await Product.find();
+    const products = await Product.find({ status: 'active' });
     return res.status(200).json(products);
   } catch (error) {
     console.error('Error getting products:', error);
