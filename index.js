@@ -36,7 +36,7 @@ const swaggerOptions = {
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Usar o Swagger UI para servir a documentação interativa
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
@@ -47,4 +47,4 @@ app.use(express.json());
 
 //Importando as rotas
 const productRoutes = require('./routes/productRoute');
-app.use('/products', productRoutes);
+app.use('/api/products', productRoutes);
