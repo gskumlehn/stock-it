@@ -49,7 +49,7 @@ async function update(req, res) {
     if (!product) return res.status(404).json({ error: 'Product not found' });
 
     const updatedProduct = await Product.updateOne({ sku: req.params.sku }, req.body);
-    sendThresholdNotificationIfNecessary(product);
+    sendThresholdNotificationIfNecessary(Product.findOne({ sku: product.sku }));
     return res.status(200).json(updatedProduct);
   } catch (error) {
     console.error('Error updating product by SKU:', error);
@@ -85,7 +85,7 @@ async function consume(req, res) {
     if (newQuantity < 0) return res.status(400).json({ error: 'Insufficient quantity' });
 
     const updatedProduct = await Product.updateOne({ sku: req.params.sku }, { quantity: newQuantity });
-    sendThresholdNotificationIfNecessary(product);
+    sendThresholdNotificationIfNecessary(Product.findOne({ sku: product.sku }));
     return res.status(200).json(updatedProduct);
   } catch (error) {
     console.error('Error updating product by SKU:', error);
