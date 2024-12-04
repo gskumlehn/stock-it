@@ -118,27 +118,29 @@ describe('Stock-it API', () => {
         expect(res.statusCode).to.equal(404);
     });
 
-    it('should consume product quantity by sku', async () => {
-        await request(app).post(url).send(newProduct);
-
-        const amount = 1;
-        const res = await request(app).patch(consumeUrl)
-            .send({
-                amount: amount
-            });
-
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.acknowledged).to.equal(true);
-    });
-
     const actions = ["consume", "restock"];
     actions.forEach((action) => {
+        const actionUrl = `${urlSku}/${action}`
+
+        it(`should ${action} product quantity by sku`, async () => {
+            await request(app).post(url).send(newProduct);
+
+            const amount = 1;
+            const res = await request(app).patch(actionUrl)
+                .send({
+                    amount: amount
+                });
+
+            expect(res.statusCode).to.equal(200);
+            expect(res.body.acknowledged).to.equal(true);
+        });
+
         const amounts = [null, -1, 0];
         amounts.forEach((amount) => {
-            it(`should not consume product quantity by sku when amount is ${amount}`, async () => {
+            it(`should not ${action} product quantity by sku when amount is ${amount}`, async () => {
                 await request(app).post(url).send(newProduct);
 
-                const res = await request(app).patch(`${urlSku}/${action}`).send({
+                const res = await request(app).patch(actionUrl).send({
                     amount: amount
                 });
 
