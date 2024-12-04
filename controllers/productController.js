@@ -70,10 +70,34 @@ async function remove(req, res) {
   }
 }
 
+
+async function reduce(req, res) {
+  try {
+    if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter SKU' });
+    if (!req.body.amount) return res.status(400).json({ error: 'Missing required parameter Amount' });
+    if (req.body.amount <= 0) return res.status(400).json({ error: 'Amount must but positive value' });
+
+    const product = await Product.findOne({ sku: req.params.sku });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    const quantity = product.quantity - req.body.amount;
+    if (quantity < 0) return res.status(400).json({ error: 'Insufficient quantity' });
+
+    const newQuantity = { quantity: quantity };
+
+    const updatedProduct = await Product.updateOne({ sku: req.params.sku }, newQuantity);
+    return res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product by SKU:', error);
+    return res.status(500).json({ error: 'Unknown error, contact support.' });
+  }
+}
+
 module.exports = {
   create,
   list,
   find,
   update,
   remove,
+  consume: reduce
 };

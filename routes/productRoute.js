@@ -7,5 +7,6 @@ router.get('/', productController.list);
 router.get('/:sku', productController.find);
 router.patch('/:sku', productController.update);
 router.delete('/:sku', productController.remove);
+router.patch('/:sku/consume', productController.consume);
 
 module.exports = router;
