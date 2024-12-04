@@ -25,6 +25,7 @@ describe('Stock-it API', () => {
     const sku = 'TST_PRD_123'
     const productName = 'Test Product'
     const urlSku = `${url}/${sku}`
+    const deactivateUrl = `${urlSku}/deactivate`
     const newProduct = {
         name: productName,
         description: 'Test Product Description',
@@ -147,6 +148,26 @@ describe('Stock-it API', () => {
                 expect(res.statusCode).to.equal(400);
             });
         });
+    });
+
+    it(`should deactivate product by sku`, async () => {
+        await request(app).post(url).send(newProduct);
+
+        const res = await request(app).patch(deactivateUrl).send();
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.acknowledged).to.equal(true);
+    });
+
+    it(`should reactivate product by sku`, async () => {
+        await request(app).post(url).send(newProduct);
+        await request(app).patch(deactivateUrl).send();
+
+        const reactivateUrl = `${urlSku}/reactivate`
+        const res = await request(app).patch(reactivateUrl).send();
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.acknowledged).to.equal(true);
     });
 
     afterEach(async () => {

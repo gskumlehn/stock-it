@@ -9,5 +9,7 @@ router.patch('/:sku', productController.update);
 router.delete('/:sku', productController.remove);
 router.patch('/:sku/consume', productController.consume);
 router.patch('/:sku/restock', productController.restock);
+router.patch('/:sku/deactivate', productController.deactivate);
+router.patch('/:sku/reactivate', productController.reactivate);
 
 module.exports = router;

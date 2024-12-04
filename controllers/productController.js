@@ -108,6 +108,36 @@ async function restock(req, res) {
   }
 }
 
+async function deactivate(req, res) {
+  try {
+    if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter SKU' });
+
+    const product = await Product.findOne({ sku: req.params.sku });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    const updatedProduct = await Product.updateOne({ sku: req.params.sku }, {status: 'inactive'});
+    return res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product by SKU:', error);
+    return res.status(500).json({ error: 'Unknown error, contact support.' });
+  }
+}
+
+async function reactivate(req, res) {
+  try {
+    if (!req.params.sku) return res.status(400).json({ error: 'Missing required parameter SKU' });
+
+    const product = await Product.findOne({ sku: req.params.sku });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    const updatedProduct = await Product.updateOne({ sku: req.params.sku }, {status: 'active'});
+    return res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product by SKU:', error);
+    return res.status(500).json({ error: 'Unknown error, contact support.' });
+  }
+}
+
 module.exports = {
   create,
   list,
@@ -115,5 +145,7 @@ module.exports = {
   update,
   remove,
   consume,
-  restock
+  restock,
+  deactivate,
+  reactivate,
 };
