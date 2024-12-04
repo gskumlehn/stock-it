@@ -25,7 +25,6 @@ describe('Stock-it API', () => {
     const sku = 'TST_PRD_123'
     const productName = 'Test Product'
     const urlSku = `${url}/${sku}`
-    const consumeUrl = `${urlSku}/consume`;
     const newProduct = {
         name: productName,
         description: 'Test Product Description',
@@ -119,29 +118,34 @@ describe('Stock-it API', () => {
         expect(res.statusCode).to.equal(404);
     });
 
-    it('should consume product quantity by sku', async () => {
-        await request(app).post(url).send(newProduct);
+    const actions = ["consume", "restock"];
+    actions.forEach((action) => {
+        const actionUrl = `${urlSku}/${action}`
 
-        const amount = 1;
-        const res = await request(app).patch(consumeUrl)
-            .send({
-                amount: amount
-            });
-
-        expect(res.statusCode).to.equal(200);
-        expect(res.body.acknowledged).to.equal(true);
-    });
-
-    const amounts = [null, -1, 0];
-    amounts.forEach((amount) => {
-        it(`should not consume product quantity by sku when amount is ${amount}`, async () => {
+        it(`should ${action} product quantity by sku`, async () => {
             await request(app).post(url).send(newProduct);
 
-            const res = await request(app).patch(consumeUrl).send({
-                amount: amount
-            });
+            const amount = 1;
+            const res = await request(app).patch(actionUrl)
+                .send({
+                    amount: amount
+                });
 
-            expect(res.statusCode).to.equal(400);
+            expect(res.statusCode).to.equal(200);
+            expect(res.body.acknowledged).to.equal(true);
+        });
+
+        const amounts = [null, -1, 0];
+        amounts.forEach((amount) => {
+            it(`should not ${action} product quantity by sku when amount is ${amount}`, async () => {
+                await request(app).post(url).send(newProduct);
+
+                const res = await request(app).patch(actionUrl).send({
+                    amount: amount
+                });
+
+                expect(res.statusCode).to.equal(400);
+            });
         });
     });
 
