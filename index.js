@@ -17,9 +17,26 @@ mongoose.connect(uri)
 const express = require('express');
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Hello, World!');
-});
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',  // Versão do OpenAPI
+        info: {
+            title: 'Stock It API',
+            version: '1.0.0',
+            description: 'Documentação da API para o sistema de gerenciamento de estoque.',
+        },
+    },
+    apis: ['./routes/*.js'],  // Caminho para os arquivos de rotas
+};
+
+// Gerar a especificação do Swagger a partir dos comentários de JSDoc
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Usar o Swagger UI para servir a documentação interativa
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
