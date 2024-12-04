@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function sendThresholdNotificationIfNecessary(product) {
-    if (product.quantity > product.threshold) return;
+    if (product.quantity <= product.threshold) return;
 
     const mailOptions = {
         from: process.env.NOTIFICATION_EMAIL,
