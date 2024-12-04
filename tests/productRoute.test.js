@@ -4,11 +4,10 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const express = require('express');
 const app = express();
-const Product = require('../models/product');
-const productRoutes = require('../routes/productRoute');
-const url = '/products';
-
 app.use(express.json());
+
+const url = '/products';
+const productRoutes = require('../routes/productRoute');
 app.use(url, productRoutes);
 
 before(async () => {
