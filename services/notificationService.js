@@ -11,18 +11,18 @@ const transporter = nodemailer.createTransport({
 });
 
 function sendThresholdNotificationIfNecessary(product) {
-    if (product.quantity <= product.threshold) return;
+    if (product.quantity < product.threshold) {
+        const mailOptions = {
+            from: process.env.NOTIFICATION_EMAIL,
+            to: process.env.EMAIL_TO_NOTIFY,
+            subject: 'One of your products is running low on stock!',
+            text: `Your product ${product.name} is running low on stock. The current quantity is ${product.quantity}`
+        };
 
-    const mailOptions = {
-        from: process.env.NOTIFICATION_EMAIL,
-        to: process.env.EMAIL_TO_NOTIFY,
-        subject: 'One of your products is running low on stock!',
-        text: `Your product ${product.name} is running low on stock. The current quantity is ${product.quantity}`
-    };
+        console.log('Enviando email');
 
-    console.log('Enviando email');
-
-    return transporter.sendMail(mailOptions);
+        return transporter.sendMail(mailOptions);
+    }
 }
 
 module.exports = {
